@@ -1,0 +1,7 @@
+{
+  "profile": "__PROFILE__",
+  "deploy": "__DEPLOY__",
+  "runtime": "__RUNTIME__",
+  "loop_mode": "__LOOP_MODE__",
+  "knowledge_level": "__KNOWLEDGE_LEVEL__"
+}
