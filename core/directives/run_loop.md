@@ -4,6 +4,13 @@
 
 Iteratively improve an artifact until it crosses the quality threshold for this profile.
 
+## Validation Contract
+
+- [ ] The editable artifact is named explicitly.
+- [ ] The evaluator or scoring rule is named explicitly.
+- [ ] Each loop iteration records its score and keep/discard decision.
+- [ ] The loop stops when the threshold is met, the iteration limit is reached, or a blocker is logged.
+
 ## Inputs
 
 - target artifact

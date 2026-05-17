@@ -1,6 +1,13 @@
 # Karpathy Loop Setup Guide
 
-Use this prompt with Claude or Gemini to fill in `directives/loop.md` and
+## Validation Contract
+
+- [ ] The optimization target file is named explicitly.
+- [ ] The evaluation method is named explicitly.
+- [ ] `directives/run_loop.md` is filled with frontmatter and executable loop constraints.
+- [ ] `execution/evaluate.py` can be run against a fixed fixture without changing that fixture.
+
+Use this prompt with Claude or Gemini to fill in `directives/run_loop.md` and
 `execution/evaluate.py` for a new project. Paste it at the start of a session
 in the project directory.
 
@@ -10,7 +17,7 @@ in the project directory.
 
 ```
 I want to set up a Karpathy optimization loop for this project.
-Read `directives/loop.md` and `execution/evaluate.py` — they contain
+Read `directives/run_loop.md` and `execution/evaluate.py` — they contain
 placeholder TODOs that need to be filled in.
 
 Before writing anything, ask me the following questions one group at a time.
@@ -46,7 +53,7 @@ GROUP 5 — Optimization directions
 12. What should the loop NOT touch? (files, schemas, behaviors that are off-limits)
 
 Once I've answered all groups, fill in:
-- directives/loop.md  (frontmatter + all sections)
+- directives/run_loop.md  (frontmatter + all sections)
 - execution/evaluate.py  (score_output() and main(), using my answers)
 - Create tests/fixtures/fixture.json from my example input in question 10.
 

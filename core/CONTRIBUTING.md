@@ -21,7 +21,7 @@ Layer 3 — Execution (execution/)
 
 ## Starting a New Project (Bootstrap)
 
-When you describe a project vision to the AI agent, it will automatically run `directives/bootstrap.md` before writing any code. This populates:
+When you describe a project vision to the AI agent, it will automatically run `directives/bootstrap_project.md` before writing any code. This populates:
 
 - `knowledge/context.md` — project identity, stack, constraints
 - `README.md` — name and description

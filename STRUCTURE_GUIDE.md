@@ -1,6 +1,6 @@
-# project-template-v2 Structure Guide
+# project-template Structure Guide
 
-This file explains what each major folder in `project-template-v2` does, why it matters, how it aligns with [WORKSHOP_PHILOSOPHY.md](/Users/danielbally/Git/WORKSHOP_PHILOSOPHY.md), and how to specify a project profile.
+This file explains what each major folder in `project-template` does, why it matters, how it aligns with [WORKSHOP_PHILOSOPHY.md](/Users/danielbally/Git/WORKSHOP_PHILOSOPHY.md), and how to specify a project profile.
 
 ## First Principle
 
@@ -257,7 +257,7 @@ This v2 structure is loop-ready by default.
 The loop pattern is:
 
 1. define the target in `task.md`
-2. describe the method in `directives/loop.md`
+2. describe the method in `directives/run_loop.md`
 3. generate artifacts or outputs
 4. evaluate them with tests, scripts, or review criteria
 5. store temporary outputs in `.tmp/`
@@ -332,7 +332,7 @@ Use the generator with `--profile`.
 Example:
 
 ```bash
-cd /Users/danielbally/Git/project-template-v2
+cd /Users/danielbally/Git/project-template
 python3 scripts/create_project.py --name produced-water-dashboard --profile dashboard-static
 ```
 

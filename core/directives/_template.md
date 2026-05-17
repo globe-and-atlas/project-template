@@ -5,7 +5,14 @@
 
 ## Goal
 
-What this directive accomplishes in one sentence.
+[High-level summary of the desired outcome]
+
+## Validation Contract
+> [!IMPORTANT]
+> **Define "Done" Before Coding**: This section must be filled out before implementation starts. It contains binary assertions that prove the goal was met, independent of how it was built.
+
+- [ ] [Binary assertion — passes or fails with no judgment]
+- [ ] [Another assertion]
 
 ## Inputs
 

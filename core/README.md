@@ -1,6 +1,6 @@
 # __PROJECT_NAME__
 
-Scaffolded from `project-template-v2` using the `__PROFILE__` profile.
+Scaffolded from `project-template` using the `__PROFILE__` profile.
 
 ## Project Profile
 

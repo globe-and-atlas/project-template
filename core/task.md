@@ -27,5 +27,5 @@ Define the first real milestone for this `__PROFILE__` project.
 ## Progress Log
 
 ### YYYY-MM-DD HH:MM — Bootstrap
-- Project scaffold created from `project-template-v2`
+- Project scaffold created from `project-template`
 - Next: replace placeholders and define the first real milestone

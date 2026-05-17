@@ -44,7 +44,7 @@ Update these fields specifically:
 For each distinct workflow the user described:
 1. Copy `directives/_template.md` → `directives/[verb_noun].md`
 2. Fill in: Goal, Inputs, expected Outputs
-3. Leave Acceptance Criteria, Edge Cases, and Rollback as stubs — they get filled as the work proceeds
+3. Draft the **Validation Contract** now — write at least 2–3 binary assertions that define "done" before any code is written. These can be skeletal but must be present. Edge Cases and Rollback can stay as stubs.
 
 Name directives by verb+noun in snake_case:
 - `fetch_data.md`, `process_records.md`, `generate_report.md`, `sync_calendar.md`

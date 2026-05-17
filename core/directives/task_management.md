@@ -6,6 +6,13 @@
 
 Ensure that both the human and AI agents have a clear, synchronized understanding of progress, blockers, and next steps through a disciplined `task.md` lifecycle.
 
+## Validation Contract
+
+- [ ] `task.md` states the current objective.
+- [ ] `task.md` lists acceptance criteria as atomic pass/fail items.
+- [ ] Completed `task.md` items cite the command, artifact, or observation that verified them.
+- [ ] Blocked work records the blocker and next action.
+
 ## Inputs
 
 - **Current User Request**: The primary trigger for updating the objective.

@@ -1,5 +1,12 @@
 # Directive: Prompt Testing with Promptfoo
 
+## Validation Contract
+
+- [ ] `promptfoo/promptfooconfig.yaml` targets the prompt or user-facing AI endpoint under test.
+- [ ] `npx promptfoo@latest eval` completes or records a clear blocker.
+- [ ] User-facing AI changes include a red-team run or an explicit reason it was skipped.
+- [ ] Evaluation results are captured in the location documented by the directive.
+
 ## Purpose
 
 Systematically evaluate and red-team any LLM prompt in this project before shipping.

@@ -9,6 +9,13 @@ dimensions:
 
 # Parallel Loop Config — __PROJECT_NAME__
 
+## Validation Contract
+
+- [ ] Each parallel loop has a separate working copy or isolated output path.
+- [ ] No two running loops write to the same `results.tsv`.
+- [ ] Each loop records its score and keep/discard decision independently.
+- [ ] The winning artifact is selected from recorded results rather than memory.
+
 Run 4 independent Karpathy loops in parallel git worktrees, each optimizing a
 different quality dimension of the same editable file. After completion, the
 leaderboard shows which change improved quality most and provides cherry-pick commands.

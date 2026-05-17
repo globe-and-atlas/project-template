@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Create a new project from project-template-v2.
+"""Create a new project from project-template.
 
 Combines core/ with a selected profile overlay, replaces placeholders,
 and performs full post-scaffold initialization (git, venv, hooks, health check).
@@ -169,7 +169,7 @@ def init_git(destination: Path, project_name: str) -> None:
     commit_msg = (
         f"chore: initialize project from template\n\n"
         f"Project: {project_name}\n"
-        f"Template: project-template-v2 (3-layer architecture)\n"
+        f"Template: project-template (3-layer architecture)\n"
     )
     run_cmd(["git", "commit", "-m", commit_msg], destination, "Initial commit")
 
@@ -201,7 +201,7 @@ def offer_github(destination: Path, project_name: str) -> None:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Create a new project from project-template-v2",
+        description="Create a new project from project-template",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog=(
             "Examples:\n"
@@ -212,7 +212,7 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--name", help="Project name (used as directory name)")
     parser.add_argument("--profile", help="Project profile to use")
-    parser.add_argument("--dest", default="/Users/danielbally/Git", help="Parent directory for the new project")
+    parser.add_argument("--dest", default=str(Path.home() / "Git"), help="Parent directory for the new project")
     parser.add_argument("--deploy", help="Override default deploy target")
     parser.add_argument("--runtime", help="Override default runtime")
     parser.add_argument("--loop-mode", help="Override default loop mode")

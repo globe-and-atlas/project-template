@@ -3,7 +3,7 @@
 evaluate.py — Immutable eval harness for the Karpathy Loop.
 
 ⚠️  DO NOT MODIFY: this file defines the metric.
-    The loop edits one target file only (see directives/loop.md) — not this file.
+    The loop edits one target file only (see directives/run_loop.md) — not this file.
 
 Contract:
   Stdout: JSON {"score": float}   — required, loop parses this
@@ -82,7 +82,7 @@ def main() -> None:
     if exec_dir not in sys.path:
         sys.path.insert(0, exec_dir)
 
-    target_module = "prompts"  # TODO: change to match directives/loop.md `editable`
+    target_module = "prompts"  # TODO: change to match directives/run_loop.md `editable`
     if target_module in sys.modules:
         del sys.modules[target_module]
 

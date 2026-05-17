@@ -77,6 +77,14 @@ If logic requires any of the following, it **must** live in `execution/`:
 
 LLM orchestration should remain "thin": decide → delegate → verify.
 
+## Creator-Verifier (Missions Protocol)
+
+After any significant feature or bug fix is implemented, spawn a fresh sub-agent (or fresh context) with only the original specification and the final output to verify the work. Declare the task "Done" only after the verifier approves.
+
+## Validation Contract
+
+Before touching any code on a non-trivial task, write binary pass/fail assertions in the directive (or task.md) that define "done" independently of how it gets built. Tests written after implementation confirm decisions — they don't catch bugs.
+
 ## Profile Awareness
 
 Not every project uses the same runtime shape. Always adapt your assumptions to the active profile.
