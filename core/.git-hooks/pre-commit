@@ -37,10 +37,17 @@ for file in $STAGED; do
     fi
 done
 
+# ── AgentShield Security Scan ────────────────────────────────────────────────
+if [ -f "/Users/danielbally/Git/.agent/scripts/security_scan.sh" ]; then
+    if ! /Users/danielbally/Git/.agent/scripts/security_scan.sh . true; then
+        ERRORS=$((ERRORS + 1))
+    fi
+fi
+
 if [[ $ERRORS -gt 0 ]]; then
     echo ""
-    echo "Commit blocked due to $ERRORS secret file(s) staged."
-    echo "Unstage them and try again."
+    echo "Commit blocked due to $ERRORS secret file(s) or security issues staged."
+    echo "Unstage them, address findings, and try again."
     exit 1
 fi
 
