@@ -4,6 +4,8 @@
 
 **Goal:** [Primary objective of this session]
 **Agent:** [Antigravity AI | Claude Code CLI | OpenAI Codex | etc.]
+**Handoff-from:** [agent name | none]
+**Handoff-type:** [new-project | continuation | cold-eyes | QC | loop | pickup]
 **Status:** [In Progress | Blocked | Completed]
 
 ## Handoff — YYYY-MM-DD HH:MM
