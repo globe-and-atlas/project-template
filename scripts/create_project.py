@@ -8,6 +8,7 @@ and performs full post-scaffold initialization (git, venv, hooks, health check).
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import shutil
@@ -18,6 +19,8 @@ from pathlib import Path
 TEMPLATE_ROOT = Path(__file__).resolve().parents[1]
 CORE_DIR = TEMPLATE_ROOT / "core"
 PROFILES_DIR = TEMPLATE_ROOT / "profiles"
+EXTERNAL_TMP_VOLUME = Path('/Volumes/Extreme SSD')
+DEFAULT_EXTERNAL_TMP_ROOT = EXTERNAL_TMP_VOLUME / 'AI_Workspace_Temp'
 
 PROFILE_DEFAULTS = {
     "dashboard-static": {"deploy": "iis", "runtime": "static", "loop_mode": "artifact", "knowledge_level": "standard"},
@@ -62,6 +65,54 @@ def replace_placeholders(root: Path, replacements: dict[str, str]) -> None:
 
 def copy_overlay(src: Path, dest: Path) -> None:
     shutil.copytree(src, dest, dirs_exist_ok=True)
+
+
+def external_tmp_root() -> Path:
+    """Choose external scratch storage without silently using the local disk."""
+    override = os.environ.get('WORKSHOP_EXTERNAL_TMP_ROOT')
+    if override:
+        root = Path(override).expanduser()
+        if not root.is_absolute():
+            raise ValueError('WORKSHOP_EXTERNAL_TMP_ROOT must be absolute')
+        return root
+    if not EXTERNAL_TMP_VOLUME.is_mount():
+        raise ValueError(f'External temporary volume is not mounted: {EXTERNAL_TMP_VOLUME}')
+    return DEFAULT_EXTERNAL_TMP_ROOT
+
+
+def external_tmp_target(destination: Path, root: Path) -> Path:
+    """Use the workspace-relative path, or a stable key outside the workspace."""
+    canonical_workspace = (Path.home() / 'Git').resolve()
+    resolved = destination.expanduser().resolve()
+    try:
+        relative = resolved.relative_to(canonical_workspace)
+    except ValueError:
+        suffix = hashlib.sha256(str(resolved).encode()).hexdigest()[:12]
+        relative = Path('_outside_workspace') / f'{destination.name}-{suffix}'
+    return root / relative / '.tmp'
+
+
+def init_external_tmp(destination: Path, root: Path) -> None:
+    """Replace a fresh template placeholder with an ignored external link."""
+    tmp = destination / '.tmp'
+    target = external_tmp_target(destination, root)
+    if tmp.is_symlink():
+        if not tmp.is_dir() or tmp.resolve() != target.resolve():
+            raise ValueError(f'Existing .tmp link points somewhere else: {tmp}')
+        return
+    if tmp.exists():
+        children = list(tmp.iterdir())
+        if len(children) != 1 or children[0].name != '.gitkeep':
+            raise ValueError(f'Existing .tmp contains work; refusing to replace: {tmp}')
+        children[0].unlink()
+        tmp.rmdir()
+    target.mkdir(parents=True, exist_ok=True)
+    tmp.symlink_to(target, target_is_directory=True)
+    ignore = destination / '.gitignore'
+    content = ignore.read_text() if ignore.exists() else ''
+    if '.tmp' not in content.splitlines():
+        ignore.write_text(content + ('' if content.endswith('\n') or not content else '\n') + '.tmp\n')
+    print(f'  {PASS}  External .tmp → {target}')
 
 
 def run_cmd(args: list[str], cwd: Path, label: str) -> bool:
@@ -221,6 +272,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--skip-git", action="store_true", help="Skip git init and initial commit")
     parser.add_argument("--skip-venv", action="store_true", help="Skip venv/npm install")
     parser.add_argument("--list-profiles", action="store_true", help="List available profiles and exit")
+    parser.add_argument("--local-tmp", action="store_true", help="Explicitly retain local .tmp instead of external storage")
     return parser.parse_args()
 
 
@@ -248,6 +300,20 @@ def main() -> int:
     destination_root = Path(args.dest).expanduser().resolve()
     destination = destination_root / args.name
 
+    try:
+        tmp_root = None if args.local_tmp else external_tmp_root()
+    except ValueError as exc:
+        print(f'{FAIL}  {exc}')
+        print('Connect the Extreme SSD or use --local-tmp explicitly.')
+        return 1
+
+    if tmp_root is not None:
+        existing_tmp = external_tmp_target(destination, tmp_root)
+        if existing_tmp.is_dir() and any(existing_tmp.iterdir()):
+            print(f'{FAIL}  External .tmp already contains work: {existing_tmp}')
+            print('Choose a different project path or inspect that existing scratch data.')
+            return 1
+
     if destination.exists() and any(destination.iterdir()) and not args.force:
         print(f"Destination already exists and is not empty: {destination}")
         print("Use --force only if you want to overwrite/merge into it.")
@@ -268,6 +334,13 @@ def main() -> int:
 
     copy_overlay(PROFILES_DIR / args.profile, destination)
     print(f"  {PASS}  Applied {args.profile} profile overlay")
+
+    if tmp_root is not None:
+        try:
+            init_external_tmp(destination, tmp_root)
+        except ValueError as exc:
+            print(f'{FAIL}  {exc}')
+            return 1
 
     # ── Placeholder replacement ───────────────────────────────────────────────
 

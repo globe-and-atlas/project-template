@@ -43,3 +43,6 @@ build/
 # *.mp4
 # *.faiss
 # *.stl
+
+# Pebble / waf (the lock file stores the whole shell environment)
+.lock-waf*

@@ -14,6 +14,7 @@
 - **Issues found**: [Surfaced during execution; new bugs or blockers]
 - **Left undone**: [Explicitly called out; what to start next]
 - **Next**: [First action for the next session]
+- **Verdict**: [kept | reworked | rejected | pending — Daniel's reaction in one phrase; never self-graded]
 
 ---
 ## Checkpoints
