@@ -67,8 +67,13 @@ def copy_overlay(src: Path, dest: Path) -> None:
     shutil.copytree(src, dest, dirs_exist_ok=True)
 
 
-def external_tmp_root() -> Path:
-    """Choose external scratch storage without silently using the local disk."""
+def external_tmp_root() -> Path | None:
+    """Choose external scratch storage, or None to keep .tmp local.
+
+    An explicit WORKSHOP_EXTERNAL_TMP_ROOT is used as given. Otherwise the
+    external volume is used only when it is mounted; on machines without it
+    (anyone else using this template, or the drive unplugged) .tmp stays local.
+    """
     override = os.environ.get('WORKSHOP_EXTERNAL_TMP_ROOT')
     if override:
         root = Path(override).expanduser()
@@ -76,7 +81,7 @@ def external_tmp_root() -> Path:
             raise ValueError('WORKSHOP_EXTERNAL_TMP_ROOT must be absolute')
         return root
     if not EXTERNAL_TMP_VOLUME.is_mount():
-        raise ValueError(f'External temporary volume is not mounted: {EXTERNAL_TMP_VOLUME}')
+        return None
     return DEFAULT_EXTERNAL_TMP_ROOT
 
 
@@ -304,8 +309,11 @@ def main() -> int:
         tmp_root = None if args.local_tmp else external_tmp_root()
     except ValueError as exc:
         print(f'{FAIL}  {exc}')
-        print('Connect the Extreme SSD or use --local-tmp explicitly.')
+        print('Fix WORKSHOP_EXTERNAL_TMP_ROOT or use --local-tmp.')
         return 1
+    if tmp_root is None and not args.local_tmp:
+        print(f'  note: {EXTERNAL_TMP_VOLUME} is not mounted; keeping .tmp local '
+              '(set WORKSHOP_EXTERNAL_TMP_ROOT to choose another location).')
 
     if tmp_root is not None:
         existing_tmp = external_tmp_target(destination, tmp_root)
